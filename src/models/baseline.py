@@ -376,7 +376,7 @@ def APL(true_best_pwr, est_best_pwr):
 
 # %% Read CSV and Load dataset
 scen_idx = 36
-csv_train = r'D:\Python\Multi Modal Beam Prediction with Deep Learning\data\raw\scenario36\deepsense_challenge2023_trainset.csv'
+csv_train = r'D:\Python\Multi Modal Beam Prediction with Deep Learning\data\raw\scenario36\deepsense_challenge2023_testset_example.csv'
 csv_dict_path = rf'D:\Python\Multi Modal Beam Prediction with Deep Learning\data\raw\scenario{scen_idx}\scenario{scen_idx}.p'
 
 with open(csv_dict_path, 'rb') as fp:
