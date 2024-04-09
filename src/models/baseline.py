@@ -379,6 +379,14 @@ scen_idx = 36
 csv_train = r'D:\Python\Multi Modal Beam Prediction with Deep Learning\data\raw\scenario36\deepsense_challenge2023_testset_example.csv'
 csv_dict_path = rf'D:\Python\Multi Modal Beam Prediction with Deep Learning\data\raw\scenario{scen_idx}\scenario{scen_idx}.p'
 
+X_SIZE = 5      # 5 input samples
+N_GPS = 2       # 2 GPSs (unit1 and unit2)
+N_GPS_COORD = 2 # 2 GPS coords (latitude & longitude)
+N_ARR = 4       # 4 arrays
+N_BEAMS = 64    # 64 beams per array
+IDX_COL1 = 'unique_index' # index col in the training CSV
+IDX_COL2 = 'abs_index'    # index col in the CSVs of the V2V dataset 
+                          # this indices are the same, just dif names
 with open(csv_dict_path, 'rb') as fp:
     csv_dict = pickle.load(fp)
 
