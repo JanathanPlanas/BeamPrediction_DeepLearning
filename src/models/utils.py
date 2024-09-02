@@ -30,9 +30,9 @@ class CNN(nn.Module):
     def __init__(self, input_size, in_channels=8):
         super(CNN, self).__init__()
         # Define the convolutional layers
-        self.conv1 = nn.Conv2d(in_channels, 16, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
+        self.conv1 = nn.Conv2d(in_channels, 12, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
         self.relu = nn.ReLU()
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
+        self.conv2 = nn.Conv2d(12, 24, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
         self.pool = nn.MaxPool2d(kernel_size=(2, 1), stride=(1, 1))
 
         # Dynamically determine the flattened size
@@ -40,7 +40,7 @@ class CNN(nn.Module):
 
         # Fully connected layers
         self.fc1 = nn.Linear(self.flattened_size, 64)
-        self.fc2 = nn.Linear(64, 2)
+        self.fc2 = nn.Linear(24, 2)
 
     def _initialize_flattened_size(self, input_size, in_channels):
         with torch.no_grad():
@@ -210,3 +210,86 @@ def Making_Predictions(input_positions, delta_input, delta_output, model, model_
         out_pos[sample_idx, 1] += delta_output * (final_time / time_steps[-1])
 
     return out_pos
+
+
+
+
+class ResidualBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, stride=(1, 1), downsample=None):
+        super(ResidualBlock, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=(2, 1), stride=stride, padding=(1, 0))
+        self.bn1 = nn.BatchNorm2d(out_channels)
+        self.relu = nn.ReLU()
+        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=(2, 1), stride=(1, 1), padding=(1, 0))
+        self.bn2 = nn.BatchNorm2d(out_channels)
+        self.downsample = downsample
+
+    def forward(self, x):
+        residual = x
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = self.relu(out)
+        out = self.conv2(out)
+        out = self.bn2(out)
+
+        if self.downsample:
+            residual = self.downsample(x)
+
+        # Ensure the residual and output have the same dimensions before adding
+        if residual.shape != out.shape:
+            residual = nn.functional.interpolate(residual, size=out.shape[2:], mode='nearest')
+
+        out += residual
+        out = self.relu(out)
+        return out
+
+class Enhanced2DCNN(nn.Module):
+    def __init__(self, input_size):
+        super(Enhanced2DCNN, self).__init__()
+        self.layer1 = nn.Sequential(
+            ResidualBlock(1, 32),
+            nn.MaxPool2d(kernel_size=(2, 1), stride=(1, 1))
+        )
+        self.layer2 = nn.Sequential(
+            ResidualBlock(32, 64, downsample=nn.Sequential(
+                nn.Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1)),
+                nn.BatchNorm2d(64)
+            )),
+            nn.MaxPool2d(kernel_size=(2, 1), stride=(1, 1)),
+            nn.Dropout(0.4)
+        )
+        self.layer3 = nn.Sequential(
+            ResidualBlock(64, 128, downsample=nn.Sequential(
+                nn.Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1)),
+                nn.BatchNorm2d(128)
+            )),
+            nn.MaxPool2d(kernel_size=(2, 1), stride=(1, 1)),
+            nn.Dropout(0.4)
+        )
+
+        # Determine the flattened size dynamically
+        self._initialize_flattened_size(input_size)
+
+        self.fc1 = nn.Linear(self.flattened_size, 256)
+        self.fc2 = nn.Linear(256, 128)
+        self.fc3 = nn.Linear(128, 64)
+        self.fc4 = nn.Linear(64, 2)
+
+    def _initialize_flattened_size(self, input_size):
+        with torch.no_grad():
+            dummy_input = torch.zeros(1, 1, input_size, 2).to(device)  # Exemplo de entrada tensorial no dispositivo correto
+            out = self.layer1(dummy_input)
+            out = self.layer2(out)
+            out = self.layer3(out)
+            self.flattened_size = out.view(1, -1).size(1)
+
+    def forward(self, x):
+        out = self.layer1(x)
+        out = self.layer2(out)
+        out = self.layer3(out)
+        out = out.view(out.size(0), -1)  # Flatten the output
+        out = torch.relu(self.fc1(out))
+        out = torch.relu(self.fc2(out))
+        out = torch.relu(self.fc3(out))
+        out = self.fc4(out)
+        return out
