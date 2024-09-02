@@ -2,12 +2,10 @@
 """
 Created on Fri Jun  9 08:17:57 2023
 
-@author: Joao
+@author: Janathan
 
 This script reads a training CSV, outputs predictions for the data, and applies
 the score metric to compute the final score. 
-
-It also computes a few other known metrics, like top-k accuracy and average power loss.
 
 
 """
@@ -88,7 +86,7 @@ def compute_ori_from_pos_delta(lat_deltas, lon_deltas):
 
     Parameters:
     - lat_deltas (numpy.ndarray or array-like): Differences in latitudes.
-    - lon_deltas (numpy.ndarray or array-like): Differences in longitudes.
+    - lon_deltas (numpy.ndarray or array-like): Differences in longitudes.Orient
 
     Returns:
     - numpy.ndarray: Orientations corresponding to the differences in latitudes and longitudes.
@@ -376,8 +374,8 @@ def APL(true_best_pwr, est_best_pwr):
 
 # %% Read CSV and Load dataset
 scen_idx = 36
-csv_train = r'D:\Python\Multi Modal Beam Prediction with Deep Learning\data\raw\scenario36\deepsense_challenge2023_testset_example.csv'
-csv_dict_path = rf'D:\Python\Multi Modal Beam Prediction with Deep Learning\data\raw\scenario{scen_idx}\scenario{scen_idx}.p'
+csv_train = r'C:\Python\BeamPrediction_DeepLearning\BeamPrediction_DeepLearning\data\deepsense_challenge2023_trainset.csv'
+csv_dict_path = rf'C:\Python\BeamPrediction_DeepLearning\BeamPrediction_DeepLearning\data\scenario36.p'
 
 X_SIZE = 5      # 5 input samples
 N_GPS = 2       # 2 GPSs (unit1 and unit2)
@@ -417,7 +415,7 @@ if False:
     axs[1].imshow(img2)  # trás
     plt.show()
 
-# %% (Fast Loading) Load Training positions and ground truth positions
+# %%23187/23187 (Fast Loading) Load Training positions and ground truth positions
 
 # Load all positions
 samples_of_scen = np.where(df_train['scenario'] == scen_idx)[0]
@@ -468,7 +466,7 @@ all_true_beams = np.flip(np.argsort(y_pwrs_reshaped, axis=1), axis=1)
 
 # %% (Slow loading) Example of data loading for the testset
 
-if False:
+if True:
     import os
 
     # Set the test CSV file path same as train CSV file path
@@ -486,30 +484,25 @@ if False:
     # Initialize an array to store GPS positions for the test dataset
     input_pos = np.zeros((n_samples, X_SIZE, N_GPS, N_GPS_COORD))
 
-    # Loop over each sample in the test dataset
-    for sample_idx in tqdm(range(n_samples), desc='Loading data'):
-        # Loop over each position index on the X axis
+        # Loop over each sample in the test dataset
+    for sample_idx in tqdm(range(n_samples), desc='Loading test data'):
         for x_idx in range(X_SIZE):
-            # Construct the file path for 'unit1' GPS position
-            gps_file_path = os.path.join('D:/Python/Multi Modal Beam Prediction with Deep Learning/data/raw/', 
-                                         folder, 
-                                         df_test[f'x{x_idx+1}_unit1_gps1'][sample_idx])
+            # Carregar caminho de arquivo GPS para 'unit1'
+            gps_file_path = os.path.join('C:/Python/BeamPrediction_DeepLearning/BeamPrediction_DeepLearning/data/', 
+                                        folder, 
+                                        df_test[f'x{x_idx+1}_unit1_gps1'][sample_idx])
             try:
-                # Load 'unit1' GPS position data into the input_pos array
                 input_pos[sample_idx, x_idx, 0, :] = np.loadtxt(gps_file_path)
             except FileNotFoundError:
-                # Handle FileNotFoundError if the GPS file is not found
                 print(f"File not found: {gps_file_path}")
 
-            # Construct the file path for 'unit2' GPS position
-            gps_file_path = os.path.join('D:/Python/Multi Modal Beam Prediction with Deep Learning/data/raw/', 
-                                         folder, 
-                                         df_test[f'x{x_idx+1}_unit2_gps1'][sample_idx])
+            # Carregar caminho de arquivo GPS para 'unit2'
+            gps_file_path = os.path.join('C:/Python/BeamPrediction_DeepLearning/BeamPrediction_DeepLearning/data/', 
+                                        folder, 
+                                        df_test[f'x{x_idx+1}_unit2_gps1'][sample_idx])
             try:
-                # Load 'unit2' GPS position data into the input_pos array
                 input_pos[sample_idx, x_idx, 1, :] = np.loadtxt(gps_file_path)
             except FileNotFoundError:
-                # Handle FileNotFoundError if the GPS file is not found
                 print(f"File not found: {gps_file_path}")
 
 # %% Step 1: Estimate positions in the new timestamp (linear interpolation)
