@@ -13,54 +13,54 @@ A previsão de feixes assistida por sensores é uma solução promissora: A depe
 
 Project Organization
 ------------
-
+    
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── Articles       <- Artigos usados como referencia para o trabalho.
+    ├── Makefile           <- Makefile com comandos como `make data` ou `make train`
+    ├── README.md          <- O README principal para desenvolvedores que usam este projeto.
+    ├── Articles           <- Artigos usados como referência para o trabalho.
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │   ├── external       <- Dados de fontes externas.
+    │   ├── interim        <- Dados intermediários que foram transformados.
+    │   ├── processed      <- Os conjuntos de dados finais e padronizados para modelagem.
+    │   └── raw            <- O conjunto de dados original e imutável.
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    ├── docs               <- Projeto padrão Sphinx; veja sphinx-doc.org para mais detalhes.
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    ├── models             <- Modelos treinados e serializados, predições de modelos ou resumos de modelos.
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
+    ├── notebooks          <- Notebooks Jupyter. Convenção de nomeação é um número (para ordenação),
+    │                         as iniciais do criador, e uma breve descrição, e.g., `1.0-jqp-initial-data-exploration`.
     │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    ├── references         <- Dicionários de dados, manuais e outros materiais explicativos.
     │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
+    ├── requirements.txt   <- O arquivo de requisitos para reproduzir o ambiente de análise, e.g.,
+    │                         gerado com `pip freeze > requirements.txt`.
     │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
+    ├── setup.py           <- Torna o projeto instalável via pip (pip install -e .) para que o src possa ser importado.
+    ├── src                <- Código fonte para uso neste projeto.
+    │   ├── __init__.py    <- Torna o src um módulo Python.
     │   │
-    │   ├── data           <- Scripts to download or generate data
+    │   ├── data           <- Scripts para baixar ou gerar dados.
     │   │   └── make_dataset.py
     │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
+    │   ├── features       <- Scripts para transformar dados brutos em features para modelagem.
     │   │   └── build_features.py
     │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── GRU.py  --> Aplicação do modelo GRU
-    │   │   └── cnn.py  --> Aplicação do modelo CNN
+    │   ├── models         <- Scripts para treinar modelos e usar modelos treinados para fazer predições.
+    │   │   │                 
+    │   │   ├── GRU.py  --> Aplicação do modelo GRU.
+    │   │   └── cnn.py  --> Aplicação do modelo CNN.
     |   |   ├── baseline.py
-    │   │   └── func.py --> Funções complementares que auxiliam a baseline
-    │   │   └── utils.py --> Criação da estrutura dos modelos neurais trabalhados
-    │   │   └── train_model.py --> Funções de treinamento , teste e predições
+    │   │   └── func.py --> Funções complementares que auxiliam a baseline.
+    │   │   └── utils.py --> Criação da estrutura dos modelos neurais trabalhados.
+    │   │   └── train_model.py --> Funções de treinamento, teste e predições.
     │   │
     │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
+    │   └── visualization  <- Scripts para criar visualizações exploratórias e orientadas para resultados.
     │       └── visualize.py
     │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+    └── tox.ini            <- Arquivo tox com configurações para executar tox; veja tox.readthedocs.io.
+
 
 
 --------
