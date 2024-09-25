@@ -1,4 +1,4 @@
-Multi_Modal_Beam_Predict_Pytorch
+BeamPrediction_Pytorch
 ==============================
 
 >> A comunicação veículo-veículo (V2V) é fundamental em sistemas de transporte inteligente (ITS) para permitir que os veículos troquem informações críticas, aumentando a segurança, a eficiência do tráfego e a experiência de direção em geral. No entanto, métodos tradicionais de comunicação V2V enfrentam dificuldades para lidar com o crescente volume e complexidade de dados, o que pode limitar a eficácia dos ITS.
@@ -13,7 +13,7 @@ A previsão de feixes assistida por sensores é uma solução promissora: A depe
 
 Project Organization
 ------------
-
+    
     ├── LICENSE
     ├── Makefile           <- Makefile com comandos como `make data` ou `make train`
     ├── README.md          <- O README principal para desenvolvedores que usam este projeto.
@@ -60,6 +60,11 @@ Project Organization
     │       └── visualize.py
     │
     └── tox.ini            <- Arquivo tox com configurações para executar tox; veja tox.readthedocs.io.
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 19f741ea37086e7a4ee2fbcd53dc2bced16eb7da
 
 --------
 
