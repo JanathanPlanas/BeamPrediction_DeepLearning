@@ -79,16 +79,43 @@ class LSTMModel(nn.Module):
         return out
 
 class GRUModel(nn.Module):
-    def __init__(self, input_size, hidden_size, num_layers, output_size):
+    def __init__(self, input_size, output_size):
         super(GRUModel, self).__init__()
-        self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size, output_size)
+        # GRU Layers conforme as especificações de entrada e saída
+        self.gru1 = nn.GRU(input_size, 64, 1, batch_first=True)  # GRU Layer 1
+        self.dropout1 = nn.Dropout(0.3)                         # Dropout após GRU Layer 1
+        self.gru2 = nn.GRU(64, 128, 1, batch_first=True)        # GRU Layer 2
+        self.dropout2 = nn.Dropout(0.3)                         # Dropout após GRU Layer 2
+        self.gru3 = nn.GRU(128, 256, 1, batch_first=True)       # GRU Layer 3
+
+        # Flatten Layer
+        self.flatten = nn.Flatten()
+
+        # Fully connected layers conforme as especificações
+        self.fc1 = nn.Linear(256, 128)                          
+        self.relu1 = nn.ReLU()
+        self.fc2 = nn.Linear(128, 64)
+        self.relu2 = nn.ReLU()
+        self.fc3 = nn.Linear(64, output_size)
 
     def forward(self, x):
-        h_0 = torch.zeros(self.gru.num_layers, x.size(0), self.gru.hidden_size).to(x.device)
-        out, _ = self.gru(x, h_0)
-        out = self.fc(out[:, -1, :])
+        # Forward pass através das GRU Layers e Dropouts
+        out, _ = self.gru1(x)
+        out = self.dropout1(out)
+        out, _ = self.gru2(out)
+        out = self.dropout2(out)
+        out, _ = self.gru3(out)
+
+        # Flatten output
+        out = self.flatten(out)
+
+        # Forward pass através das camadas lineares e ReLU
+        out = self.relu1(self.fc1(out))
+        out = self.relu2(self.fc2(out))
+        out = self.fc3(out)
+        
         return out
+
 
 def train_model(input_positions, delta_input, delta_output, model_class, epochs=15, batch_size=8, learning_rate=0.03):
     n_samples = input_positions.shape[0]
