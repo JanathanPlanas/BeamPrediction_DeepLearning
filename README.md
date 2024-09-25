@@ -17,6 +17,7 @@ Project Organization
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
+    ├── Articles       <- Artigos usados como referencia para o trabalho.
     ├── data
     │   ├── external       <- Data from third party sources.
     │   ├── interim        <- Intermediate data that has been transformed.
@@ -51,8 +52,13 @@ Project Organization
     │   │
     │   ├── models         <- Scripts to train models and then use trained models to make
     │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
+    │   │   ├── GRU.py  --> Aplicação do modelo GRU
+    │   │   └── cnn.py  --> Aplicação do modelo CNN
+    |   |   ├── baseline.py
+    │   │   └── func.py --> Funções complementares que auxiliam a baseline
+    │   │   └── utils.py --> Criação da estrutura dos modelos neurais trabalhados
+    │   │   └── train_model.py --> Funções de treinamento , teste e predições
+    │   │
     │   │
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
