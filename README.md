@@ -1,4 +1,4 @@
-Multi_Modal_Beam_Predict_Pytorch
+BeamPrediction_Pytorch
 ==============================
 
 >> A comunicação veículo-veículo (V2V) é fundamental em sistemas de transporte inteligente (ITS) para permitir que os veículos troquem informações críticas, aumentando a segurança, a eficiência do tráfego e a experiência de direção em geral. No entanto, métodos tradicionais de comunicação V2V enfrentam dificuldades para lidar com o crescente volume e complexidade de dados, o que pode limitar a eficácia dos ITS.
